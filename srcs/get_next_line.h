@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   get_next_line.h                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
+/*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/06 10:38:08 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/06 18:53:03 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -50,5 +50,8 @@ typedef struct			s_lst {
 	struct s_lst		*next_fd;
 }						t_lst;
 
-int						get_next_line(int fd, char **line);
+int				get_next_line(int fd, char **line);
+char			*ft_strjoin(char *s1, char *buffer);
+size_t			ft_strlen(char *str);
+
 #endif

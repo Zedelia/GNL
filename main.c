@@ -105,6 +105,74 @@ void	fonction_test_multiple_files(char **argv, int argc, int max)
 	}
 }
 */
+size_t		ft_strlen(const char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+
+char	*ft_strdup(const char *s1)
+{
+	int		len_s1;
+	int		i;
+	char	*cpy;
+
+	i = 0;
+	len_s1 = ft_strlen(s1);
+	if (!(cpy = malloc((len_s1 + 1) * sizeof(char))))
+		return (NULL);
+	while (i < len_s1)
+	{
+		cpy[i] = s1[i];
+		i++;
+	}
+	cpy[i] = '\0';
+	return (cpy);
+}
+
+t_lst   *ft_create_elem(t_lst *list, int fd)
+{
+    t_lst   *new_list;
+    
+    if (!(new_list = malloc(sizeof(t_lst))))
+		return (NULL);
+	new_list->line_fd = fd;
+    new_list->line_content = NULL;
+    new_list->next_line = NULL;
+    new_list->line_status = Not_full;
+    if (!list)
+    {
+        new_list->next_fd = NULL;
+        return (new_list);
+    }
+    else if (list && fd == list->line_fd)
+	{
+        new_list->next_fd = list->next_fd;
+		list->next_line = new_list;
+	}
+	else if (list && fd != list->line_fd)
+        list->next_fd = new_list;
+    return (list);
+}
+
+t_lst   *ft_manage_fd(int fd, t_lst *list)
+{
+	t_lst   *list_tmp;
+
+	list_tmp = list;
+	while (list_tmp && list_tmp->line_fd != fd)
+		list_tmp = list_tmp->next_fd;
+	if (list_tmp && fd == list_tmp->line_fd)
+		return (list_tmp);
+	return (ft_create_elem(list_tmp, fd));
+}
+
+
 int     main(int argc, char** argv)
 {
 	int len_read;
@@ -112,33 +180,30 @@ int     main(int argc, char** argv)
 	int fd;
 	char *arg = argv[1];
 	int i = 0;
+	t_lst *list = NULL;
+	t_lst *list_tmp = NULL;
+	t_lst *list_tmp_tmp = NULL;
+	t_lst *list_tmp_tmp_tmp = NULL;
+
 
 	fd = open(arg, O_RDONLY);
-	len_read = read(fd, buffer, 10);
+
+
+	list = ft_create_elem(list, fd);
+	len_read = read(fd, buffer, 100);
 	buffer[len_read] = 0;
-
-	printf("fd = %d \nlen_read = %d - buffer %s \n", fd, len_read, buffer);
-
+	list->line_content = ft_strdup(buffer);
+	printf("fd = %d \nlen_read = %d  \n", fd, len_read);
 	while (buffer[i])
 	{
 		buffer[i] = 0;
 		i++;
 	}
-	len_read = read(fd, buffer, 22);
-	
-	buffer[len_read] = 0;
-	printf("fd = %d \nlen_read = %d - buffer %s \n", fd, len_read, buffer);
 
-	while (buffer[i])
-	{
-		buffer[i] = 0;
-		i++;
-	}
-	len_read = read(fd, buffer, 22);
-	
-	buffer[len_read] = 0;
-	printf("fd = %d \nlen_read = %d - buffer %s \n", fd, len_read, buffer);
 
+
+	buffer[len_read] = 0;
+	
 
 	// if (argv[1][0] == '0')
 	// {
