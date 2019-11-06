@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/06 18:53:03 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/06 20:52:41 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -39,19 +39,26 @@ typedef enum			e_result
 typedef	enum			e_line_status
 {
 	Not_full = 0,
-	Full = 1,
+	Full_line = 1,
+	End_file = 2,
 }						t_line_status;
 
-typedef struct			s_lst {
-	int					line_fd;
-	char				*line_content;
-	t_line_status		line_status;
-	struct s_lst		*next_line;
-	struct s_lst		*next_fd;
-}						t_lst;
+typedef struct					s_lst_fd {
+	int							list_fd;
+	struct s_lst_content		*first_content;
+	struct s_lst_fd				*next_fd;
+}								t_lst_fd;
+
+typedef struct					s_lst_content {
+	char						*content;
+	t_line_status				status;
+	struct s_lst_content		*next_line;
+}								t_lst_content;
 
 int				get_next_line(int fd, char **line);
 char			*ft_strjoin(char *s1, char *buffer);
 size_t			ft_strlen(char *str);
+t_lst_content	*ft_create_lst_content(char *content);
+t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd);
 
 #endif
