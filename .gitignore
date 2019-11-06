@@ -1,0 +1,7 @@
+gnl
+srcs/get_next_line.o
+srcs/get_next_line_utils.o
+a.out
+gnl.dSYM
+srcs/Icon
+Get_Next_Line_Tester
