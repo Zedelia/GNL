@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/06 21:18:42 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/06 21:22:19 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -86,6 +86,6 @@ int		get_next_line(int fd, char **line)
 	*line = ft_strjoin(*line, list_line->content);
 
 
-	list = ft_pop_out_elem(list);
+	list = ft_pop_out_elem(list_line);
 	return (END_FILE);
 }
