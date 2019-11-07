@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 13:16:17 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 16:00:39 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -32,13 +32,14 @@ int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
 		(*list_tmp)->next_line = ft_create_lst_content(NULL);
 		(*list_tmp) = (*list_tmp)->next_line;
 		}
-		else if (bcursor == len_read - 1)
+		bcursor += 1;
+		}
+		if (bcursor == len_read)
 		{
+			// printf(">>[%s]\n", &buffer[start_line]);
 			if (!((*list_tmp)->content = ft_strjoin((*list_tmp)->content, &buffer[start_line])))
 					return (0);
 		}
-		bcursor += 1;
-	}
 	return(1);
 }
 
@@ -54,14 +55,14 @@ t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
 	while (list->status != Full_line)
 	{
 		len_read = read(fd, buffer, BUFFER_SIZE);
-		if (len_read == 0)
+		buffer[len_read] = '\0';
+		if (!(ft_alloc_content(&list_tmp, buffer, len_read)))
+			return (NULL);
+		if (len_read == 0 && buffer[0] == 0)
 		{
 			list->status = End_file;
 			return (list);
 		}
-		buffer[len_read] = '\0';
-		if (!(ft_alloc_content(&list_tmp, buffer, len_read)))
-			return (NULL);
 			
 	}
 	return (list);
@@ -92,11 +93,8 @@ int		get_next_line(int fd, char **line)
 	if (fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 
 		|| !(list_fd = ft_manage_fd(fd, list_s)))
 		return (ERR);
-	// if (list_fd->first_content == NULL)
-	// {
-	// 	list_line = ft_create_lst_content(0);
-	// 	list_fd->first_content = list_line;
-	// }
+	if (list_fd->first_content == NULL)
+		return (END_FILE);
 	list_line = list_fd->first_content;
 	list_line = ft_read_buffer(list_fd->first_content, fd);
 	*line = ft_strjoin(*line, list_line->content);
