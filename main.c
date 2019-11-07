@@ -15,10 +15,10 @@ void	fonction_test_(char *argv)
 	int i = 0;
 	char *line;
 	int fd;
-	int result = 3;
+	int result = 1;
 	fd = open(argv, O_RDONLY);
 	NORMAL;
-	while (i < 10)
+	while (result == 1)
 	{
 		result = get_next_line(fd, &line);
 		printf("gnl: %d - L. %d - %s\n",result, i, line);

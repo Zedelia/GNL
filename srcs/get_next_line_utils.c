@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 10:44:55 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 11:03:20 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,9 +18,9 @@ int		ft_strlen(char *str)
 	int i;
 
 	i = 0;
-	if (!str)
+	if (str == NULL)
 		return (i);
-	while (str[i] != '\0' && str[i] != '\n')
+	while (str[i] != '\n' && str[i] != '\0')
 		i++;
 	return (i);
 }
@@ -36,13 +36,10 @@ char	*ft_strjoin(char *s1, char *buffer)
 	if (!(join = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(buffer) + 1)))))
 		return (NULL);
 	i = 0;
-	if (s1)
+	while (s1 && s1[i])
 	{
-		while (s1[i])
-		{
-			join[i] = s1[i];
-			i++;
-		}
+		join[i] = s1[i];
+		i++;
 	}
 	j = 0;
 	while (buffer[j] != '\0' && buffer[j] != '\n')
@@ -55,12 +52,10 @@ t_lst_content	*ft_create_lst_content(char *content)
 {
 	t_lst_content *new_list;
 
+	content = NULL;
 	if (!(new_list = malloc(sizeof(t_lst_content))))
 		return (NULL);
-	if (!content)
-		new_list->content = NULL;
-	else
-		new_list->content = content;
+	new_list->content = content;
 	new_list->status = Not_full;
 	new_list->next_line = NULL;
 	return (new_list);
