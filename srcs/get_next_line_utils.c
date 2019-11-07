@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 12:53:18 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 16:35:15 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,10 +52,11 @@ t_lst_content	*ft_create_lst_content(char *content)
 {
 	t_lst_content *new_list;
 
-	content = NULL;
 	if (!(new_list = malloc(sizeof(t_lst_content))))
 		return (NULL);
-	new_list->content = content;
+	if (!(new_list->content = malloc(sizeof(char) * ft_strlen(content) +1)))
+		return (NULL);
+	new_list->content = content; 
 	new_list->status = Not_full;
 	new_list->next_line = NULL;
 	return (new_list);
@@ -82,6 +83,8 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd)
 
 void ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd)
 {
+	if (!(list_line))
+		return ;
 	(*list_fd)->first_content = list_line->next_line;
 	if (list_line->content)
 	{

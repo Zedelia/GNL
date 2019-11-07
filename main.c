@@ -17,26 +17,22 @@ void	fonction_test_(char *argv)
 	int fd;
 	int result = 1;
 	fd = open(argv, O_RDONLY);
-	NORMAL;
-	while (result == 1)
+
+	while (result == get_next_line(fd, &line))
 	{
-		result = get_next_line(fd, &line);
 		printf("gnl: %d - L. %d - %s\n",result, i, line);
-		i++;
 		free(line);
 		line = NULL;
+		i++;
 	}
 	if (get_next_line(fd, &line) == 0)
 	{
-		NORMAL;
 		printf("EOF\n");
 	}
 	if (result == -1)
 	{
-		UNKNOWN;
 		printf("ERR\n");
 	}
-	NORMAL;
 	printf("\n\n---------------------\n\n");
 }
 
