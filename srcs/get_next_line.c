@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 11:05:28 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 12:55:16 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -84,12 +84,12 @@ int		get_next_line(int fd, char **line)
 	static t_lst_fd		*list_s;
 	t_lst_fd   			*list_fd;
 	t_lst_content   	*list_line;
+	int 	result;
 
 	*line = NULL;
 	if (fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 ||
-		!(list_s = ft_manage_fd(fd, list_s)))
+		!(list_fd = ft_manage_fd(fd, list_s)))
 		return (ERR);
-	list_fd = list_s;
 	if (list_fd->first_content == NULL)
 	{
 		list_line = ft_create_lst_content(0);
@@ -98,9 +98,10 @@ int		get_next_line(int fd, char **line)
 	list_line = list_fd->first_content;
 	list_line = ft_read_buffer(list_fd->first_content, fd);
 	*line = ft_strjoin(*line, list_line->content);
-	list_fd->first_content = list_line->next_line;
+	result = list_line->status;
+	ft_popout_read_elem(list_line, &list_fd);
 
-	return (list_line->status);
+	return (result);
 
 
 

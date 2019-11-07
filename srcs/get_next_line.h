@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 11:04:41 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 12:53:44 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -60,5 +60,6 @@ char			*ft_strjoin(char *s1, char *buffer);
 int				ft_strlen(char *str);
 t_lst_content	*ft_create_lst_content(char *content);
 t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *list, int fd);
+void ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd);
 
 #endif
