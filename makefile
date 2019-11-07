@@ -13,9 +13,9 @@ SRCS := $(patsubst %,srcs/%.c,${SRCS})
 MAIN = main.c
 
 CC = gcc 
-CFLAGS = -Wall -Wextra -Werror -g # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 DFLAGS = -D BUFFER_SIZE=${ARGS}
-COMP := ${CC} ${CFLAGS} -I ${INCLUDES} libft.a
+COMP := ${CC} ${CFLAGS} -I ${INCLUDES} 
 
 NO_COLOR = \x1b[0m
 OK_COLOR = \x1b[32;01m

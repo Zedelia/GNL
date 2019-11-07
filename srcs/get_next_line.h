@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   get_next_line.h                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
+/*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/06 20:52:41 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 09:44:01 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,7 +23,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 10
 # endif
 
 # define BUFFER_IS_FULL(bcursor) (bcursor == BUFFER_SIZE - 1) ? 1 : 0
@@ -38,9 +38,9 @@ typedef enum			e_result
 
 typedef	enum			e_line_status
 {
-	Not_full = 0,
+	Not_full = 2,
+	End_file = 0,
 	Full_line = 1,
-	End_file = 2,
 }						t_line_status;
 
 typedef struct					s_lst_fd {
@@ -57,8 +57,8 @@ typedef struct					s_lst_content {
 
 int				get_next_line(int fd, char **line);
 char			*ft_strjoin(char *s1, char *buffer);
-size_t			ft_strlen(char *str);
+int				ft_strlen(char *str);
 t_lst_content	*ft_create_lst_content(char *content);
-t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd);
+t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *list, int fd);
 
 #endif
