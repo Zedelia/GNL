@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 12:53:44 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 12:55:52 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,7 +23,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 64
 # endif
 
 # define BUFFER_IS_FULL(bcursor) (bcursor == BUFFER_SIZE - 1) ? 1 : 0
