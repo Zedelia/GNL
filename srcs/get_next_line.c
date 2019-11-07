@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 17:19:31 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 17:20:12 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -100,7 +100,8 @@ int		get_next_line(int fd, char **line)
 	list_line = list_fd->first_content;
 	if (!(list_line = ft_read_buffer(list_fd->first_content, fd)))
 		return (ERR);
-	*line = ft_strjoin(*line, list_line->content);
+	if (!(*line = ft_strjoin(*line, list_line->content)))
+		return (ERR);
 	result = list_line->status;
 	ft_popout_read_elem(list_line, &list_fd);
 	return (result);
