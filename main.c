@@ -18,9 +18,8 @@ void	fonction_test_(char *argv)
 	int result = 1;
 	fd = open(argv, O_RDONLY);
 
-	while (i < 3)
+	while (result == get_next_line(fd, &line))
 	{
-		result = get_next_line(fd, &line);
 		printf("gnl: %d - L. %d - %s\n",result, i, line);
 		free(line);
 		line = NULL;
@@ -28,7 +27,7 @@ void	fonction_test_(char *argv)
 	}
 	if (get_next_line(fd, &line) == 0)
 	{
-		printf("line = %s\nEOF\n", line);
+		printf("EOF\n");
 	}
 	if (result == -1)
 	{

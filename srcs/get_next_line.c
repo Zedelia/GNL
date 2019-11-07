@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 16:53:42 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 17:19:31 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,17 +41,18 @@ int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
 	return(1);
 }
 
-
 t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
 {
 
 	int				len_read;
-	char			buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	t_lst_content 	*list_tmp;
 	
 	list_tmp = list;
 	while (list->status != Full_line)
 	{
+		if (!(buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+			return (NULL);
 		len_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[len_read] = '\0';
 		if (!(ft_alloc_content(&list_tmp, buffer, len_read)))
@@ -63,20 +64,22 @@ t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
 				return (NULL);
 			return (list);
 		}
+		free(buffer);
+		buffer = NULL;
 	}
 	return (list);
 }
 
-t_lst_fd   *ft_manage_fd(int fd, t_lst_fd *list)
+t_lst_fd   *ft_manage_fd(int fd, t_lst_fd **list)
 {
 	t_lst_fd   *list_tmp;
 
-	list_tmp = list;
+	list_tmp = *list;
 	while (list_tmp->next_fd && list_tmp->list_fd != fd)
 		list_tmp = list_tmp->next_fd;
 	if (list_tmp && fd == list_tmp->list_fd)
 		return (list_tmp);
-	else
+	else if (list_tmp && fd != list_tmp->list_fd)
 		list_tmp->next_fd = ft_create_lst_fd(list_tmp, fd);
 	return (list_tmp->next_fd);
 }
@@ -92,12 +95,11 @@ int		get_next_line(int fd, char **line)
 	if (!list_s && !(list_s = ft_create_lst_fd(list_s, fd)))
 		return (ERR);
 	if (fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 
-		|| !(list_fd = ft_manage_fd(fd, list_s)))
+		|| !(list_fd = ft_manage_fd(fd, &list_s)))
 		return (ERR);
-	if (list_fd->first_content == NULL)
-		return (END_FILE);
 	list_line = list_fd->first_content;
-	list_line = ft_read_buffer(list_fd->first_content, fd);
+	if (!(list_line = ft_read_buffer(list_fd->first_content, fd)))
+		return (ERR);
 	*line = ft_strjoin(*line, list_line->content);
 	result = list_line->status;
 	ft_popout_read_elem(list_line, &list_fd);
