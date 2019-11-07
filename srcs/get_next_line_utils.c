@@ -6,7 +6,7 @@
 /*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 16:59:23 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/07 17:03:09 by melodiebos  ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -67,7 +67,7 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd)
 	if (!(new_list = malloc(sizeof(t_lst_fd))))
 		return (NULL);
 	new_list->list_fd = fd;
-	if (!(new_list->first_content = ft_create_lst_content(0)))
+	if (!(new_list->first_content = ft_create_lst_content("")))
 		return (NULL);
 	if (!list)
 	{
