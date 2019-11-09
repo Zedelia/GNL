@@ -13,7 +13,7 @@ SRCS := $(patsubst %,srcs/%.c,${SRCS})
 MAIN = main.c
 
 CC = gcc 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 DFLAGS = -D BUFFER_SIZE=${ARGS}
 COMP := ${CC} ${CFLAGS} -I ${INCLUDES} 
 

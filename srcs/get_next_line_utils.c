@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   get_next_line_utils.c                            .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
+/*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 17:24:45 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 13:45:54 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,7 +42,7 @@ char	*ft_strjoin(char *s1, char *buffer)
 		i++;
 	}
 	j = 0;
-	while (buffer[j] != '\0' && buffer[j] != '\n')
+	while (buffer && buffer[j] != '\0' && buffer[j] != '\n')
 		join[i++] = buffer[j++];
 	join[i] = '\0';
 	return (join);
@@ -80,7 +80,7 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd)
 	return (new_list);
 }
 
-void ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd)
+void	ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd)
 {
 	if (!(list_line) || !(*list_fd))
 		return ;

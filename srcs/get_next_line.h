@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   get_next_line.h                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
+/*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 15:34:10 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 13:44:37 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -61,5 +61,6 @@ int				ft_strlen(char *str);
 t_lst_content	*ft_create_lst_content(char *content);
 t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *list, int fd);
 void ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd);
+int	ft_lstclear(t_lst_fd *list);
 
 #endif

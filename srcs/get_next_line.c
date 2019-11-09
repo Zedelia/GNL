@@ -3,16 +3,33 @@
 /*                                                              /             */
 /*   get_next_line.c                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: melodiebos <melodiebos@student.le-101.f    +:+   +:    +:    +:+     */
+/*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/07 17:25:05 by melodiebos  ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 13:46:01 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+int		ft_lstclear(t_lst_fd *list)
+{
+	t_lst_fd   *tmp;
+
+	if (!list)
+		return (ERR) ;
+	while (list)
+	{
+		tmp = list->next_fd;
+		while (list->first_content)
+			ft_popout_read_elem(list->first_content, &list);
+		free(list);
+		list = NULL,
+		list = tmp;
+	}
+	return (ERR);
+}
 
 int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
 {
@@ -33,9 +50,7 @@ int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
 		(*list_tmp) = (*list_tmp)->next_line;
 		}
 		if (bcursor == len_read - 1)
-		{
 			(*list_tmp)->content = ft_strjoin((*list_tmp)->content, &buffer[start_line]);
-		}
 		bcursor += 1;
 		}
 	return(1);
@@ -96,12 +111,11 @@ int		get_next_line(int fd, char **line)
 		return (ERR);
 	if (fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 
 		|| !(list_fd = ft_manage_fd(fd, &list_s)))
-		return (ERR);
+		return (ft_lstclear(list_s));
 	list_line = list_fd->first_content;
-	if (!(list_line = ft_read_buffer(list_fd->first_content, fd)))
-		return (ERR);
-	if (!(*line = ft_strjoin(*line, list_line->content)))
-		return (ERR);
+	if (!(list_line = ft_read_buffer(list_fd->first_content, fd))
+		|| (!(*line = ft_strjoin(*line, list_line->content))))
+		return (ft_lstclear(list_s));
 	result = list_line->status;
 	ft_popout_read_elem(list_line, &list_fd);
 	return (result);
