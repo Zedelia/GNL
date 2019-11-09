@@ -5,36 +5,35 @@
 #include <ctype.h>
 # include <unistd.h>
 
-#define SUCCESS printf("\033[32m")
-#define FAILED printf("\033[31m")
-#define NORMAL printf("\033[0m");
-#define UNKNOWN printf("\033[33m")
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
 
 void	fonction_test_(char *argv)
 {
-	int i = 0;
+	int li = 1;
 	char *line;
 	int fd;
 	int result = 1;
 	fd = open(argv, O_RDONLY);
 
-	while (result == get_next_line(fd, &line))
+	while ((result = get_next_line(fd, &line)) == 1)
 	{
-		printf("gnl: %d - L. %d - %s\n",result, i, line);
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
 		free(line);
 		line = NULL;
-		i++;
+		li++;
 	}
-	printf("gnl: %d - L. %d - %s\n",result, i, line);
+	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
 	free(line);
 	line = NULL;
-	if (get_next_line(fd, &line) == 0)
-	{
-		printf("EOF\n");
-	}
 	if (result == -1)
 	{
-		printf("ERR\n");
+		printf(RED "ERR\n" RESET);
 	}
 	printf("\n\n---------------------\n\n");
 	free(line);
@@ -43,39 +42,42 @@ void	fonction_test_(char *argv)
 
 void	fonction_test_max(char *argv, int max)
 {
-	int i = 0;
-	int j = 0;
+	int li = 1;
+	int result = 1;
 	char *line;
 	int fd;
 	fd = open(argv, O_RDONLY);
-	while ((j = get_next_line(fd, &line)) && i < max)
+	while (result == get_next_line(fd, &line) && li < max)
 	{
-		printf("L. %d - %s\n", i, line);
-		i++;
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
+		li++;
 	}
 }
 
 void 	multiple_files(int fd, char *argv, int max)
 {
-	int li = 0;
+	int li = 1;
 	int result = 0;
 	char *line = NULL;
 
 
-	printf("\n%s - fd : %d\n", argv, fd);
+	printf(CYAN "\n ## %s ## FD: %d\n\n" RESET, argv, fd);
 	while ((result = get_next_line(fd, &line)) && li < max)
 	{
 		if (result == -1)
 		{
-			UNKNOWN;
-			printf("ERR\n");
+			printf(RED "ERR\n" RESET);
 			break ;
 		}
-		printf("L. %d - %s\n", li, line);
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
 		free(line);
 		line = NULL;
 		li++;
 	}
+	result == 1 ? printf(YELLOW "[Return %d]" RESET, result) : printf(MAGENTA "[Return %d]" RESET, result);
+	printf(" - " CYAN "L. %d: " RESET  "%s\n", li, line);
+	free(line);
+	line = NULL;
 }
 
 void	fonction_test_multiple_files(char **argv, int argc, int max)
@@ -89,7 +91,6 @@ void	fonction_test_multiple_files(char **argv, int argc, int max)
 		fd[i] = open(argv[i + 2], O_RDONLY);
 		if (fd[i] < 0)
 		{
-			FAILED;
 			printf("fd ERR");
 			return ;
 		}
@@ -116,25 +117,23 @@ int     main(int argc, char** argv)
 
 	if (argv[1][0] == '0')
 	{
-		UNKNOWN;
-		printf("\nTEST 0 - Printf the entire file\n");
-		NORMAL;
+
+		printf(GREEN "\n>> TEST 0 - Printf the entire file <<\n\n" RESET);
 		fonction_test_(argv[2]);
-		printf("\n\n---------------------\n\n");
+		printf(GREEN "\n\n---------------------\n\n" RESET);
 	}
 	if (argv[1][0] == '1')
 	{
-		UNKNOWN;
-		printf("\nTEST 1 - Printf the 5 first lines\n");
-		NORMAL;
+
+		printf(GREEN "\n>> TEST 1 - Printf the 5 first lines <<\n\n" RESET);
+
 		fonction_test_max(argv[2], 5);
 		printf("\n\n---------------------\n\n");
 	}
 	if (argv[1][0] == '2')
 	{
-		UNKNOWN;
-		printf("\nTEST 2 - Open successively argc\n");
-		NORMAL;
+
+		printf(GREEN "\n>>TEST 2 - Open successively argc <<\n\n" RESET);
 		fonction_test_multiple_files(argv, argc - 2, 4);
 		printf("\n\n---------------------\n\n");
 	}

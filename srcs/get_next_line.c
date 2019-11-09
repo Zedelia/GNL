@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 16:08:56 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 16:10:27 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -121,7 +121,7 @@ t_lst_fd		*ft_manage_fd(int fd, t_lst_fd **lst)
 /*
 ** Verifications
 ** clear if Err
-** Line copy
+** line copy
 */
 
 int				get_next_line(int fd, char **line)
