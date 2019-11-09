@@ -112,17 +112,16 @@ void	fonction_test_multiple_files(char **argv, int argc, int max)
 }
 
 
-
-
 int     main(int argc, char** argv)
 {
+	char *line = NULL;
+	int result;
 
 	if (argv[1][0] == '0')
 	{
 
 		printf(GREEN "\n>> TEST 0 - Printf the entire file <<\n\n" RESET);
 		fonction_test_(argv[2]);
-		printf(GREEN "\n\n---------------------\n\n" RESET);
 	}
 	if (argv[1][0] == '1')
 	{
@@ -130,15 +129,22 @@ int     main(int argc, char** argv)
 		printf(GREEN "\n>> TEST 1 - Printf the 5 first lines <<\n\n" RESET);
 
 		fonction_test_max(argv[2], 70);
-		printf("\n\n---------------------\n\n");
 	}
 	if (argv[1][0] == '2')
 	{
 
 		printf(GREEN "\n>>TEST 2 - Open successively argc <<\n\n" RESET);
 		fonction_test_multiple_files(argv, argc - 2, 5);
-		printf("\n\n---------------------\n\n");
 	}
+	if (argv[1][0] == '3')
+	{
+
+		printf(GREEN "\n>>TEST 3 - FD is corrupt <<\n\n" RESET);
+		printf(RED "||  FD = 101  ||\n\n" RESET);
+		(result = get_next_line(42, &line)) == -1 ? printf(GREEN " [ %d ] YEAH !" RESET, result) : printf(MAGENTA " [ %d ] " RESET, result);
+	}
+
+	printf(YELLOW "\n\n---------------------\n\n" RESET);
 
 	return(0);
 }

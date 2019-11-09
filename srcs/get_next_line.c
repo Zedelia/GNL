@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 16:59:24 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 17:20:28 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -131,11 +131,13 @@ int				get_next_line(int fd, char **line)
 	t_lst_line			*lst_line;
 	int					result;
 
+	if (!line || fd > FD_SETSIZE || fd < 0 || BUFF_SIZE < 1
+		|| read(fd, NULL, 0) < 0)
+		return (ERR);
 	*line = NULL;
 	if (!lst_s && !(lst_s = ft_create_lst_fd(lst_s, fd)))
 		return (ERR);
-	if (fd > FD_SETSIZE || fd < 0 || BUFF_SIZE < 1 || read(fd, NULL, 0) < 0
-		|| !(lst_fd = ft_manage_fd(fd, &lst_s)))
+	if (!(lst_fd = ft_manage_fd(fd, &lst_s)))
 		return (ft_lstclear(lst_s));
 	lst_line = lst_fd->first_line;
 	if (!(lst_line = ft_read_file(lst_fd->first_line, fd))
