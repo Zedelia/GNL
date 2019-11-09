@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 17:09:45 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 17:25:23 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,8 +22,8 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE 1
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
 # endif
 
 typedef enum			e_result

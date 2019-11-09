@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 17:20:28 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 17:25:21 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -80,9 +80,9 @@ t_lst_line		*ft_read_file(t_lst_line *lst, int fd)
 	lst_tmp = lst;
 	while (lst->status != Full_line)
 	{
-		if (!(buff = malloc(sizeof(char) * (BUFF_SIZE + 1))))
+		if (!(buff = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 			return (NULL);
-		len_read = read(fd, buff, BUFF_SIZE);
+		len_read = read(fd, buff, BUFFER_SIZE);
 		buff[len_read] = '\0';
 		if (!(ft_alloc_buff(&lst_tmp, buff, len_read)))
 			return (NULL);
@@ -131,7 +131,7 @@ int				get_next_line(int fd, char **line)
 	t_lst_line			*lst_line;
 	int					result;
 
-	if (!line || fd > FD_SETSIZE || fd < 0 || BUFF_SIZE < 1
+	if (!line || fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1
 		|| read(fd, NULL, 0) < 0)
 		return (ERR);
 	*line = NULL;
