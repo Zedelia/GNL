@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:42:54 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:48:37 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -46,22 +46,22 @@ typedef	enum			e_line_status
 
 typedef struct					s_lst_fd {
 	int							lst_fd;
-	struct s_lst_content		*first_line;
+	struct s_lst_line		*first_line;
 	struct s_lst_fd				*next_fd;
 }								t_lst_fd;
 
-typedef struct					s_lst_content {
-	char						*content;
+typedef struct					s_lst_line {
+	char						*line;
 	t_line_status				status;
-	struct s_lst_content		*next_line;
-}								t_lst_content;
+	struct s_lst_line		*next_line;
+}								t_lst_line;
 
 int				get_next_line(int fd, char **line);
-char			*ft_strjoin(char *s1, char *buff);
+char			*ft_join(char *s1, char *buff);
 int				ft_strlen(char *str);
-t_lst_content	*ft_create_lst_content(char *content);
-t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *lst, int fd);
-void ft_popout_read_elem(t_lst_content *lst_line, t_lst_fd **lst_fd);
-int	ft_lstclear(t_lst_fd *lst);
+t_lst_line		*ft_create_lst_line(char *line);
+t_lst_fd 		*ft_create_lst_fd(t_lst_fd *lst, int fd);
+void 			ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd);
+int				ft_lstclear(t_lst_fd *lst);
 
 #endif

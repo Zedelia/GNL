@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:42:54 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:46:43 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,7 +25,7 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *buff)
+char	*ft_join(char *s1, char *buff)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -50,13 +50,13 @@ char	*ft_strjoin(char *s1, char *buff)
 	return (join);
 }
 
-t_lst_content	*ft_create_lst_content(char *content)
+t_lst_line	*ft_create_lst_line(char *line)
 {
-	t_lst_content *new_lst;
+	t_lst_line *new_lst;
 
-	if (!(new_lst = malloc(sizeof(t_lst_content))))
+	if (!(new_lst = malloc(sizeof(t_lst_line))))
 		return (NULL);
-	new_lst->content = ft_strjoin(NULL, content); 
+	new_lst->line = ft_join(NULL, line); 
 	new_lst->status = Not_full;
 	new_lst->next_line = NULL;
 	return (new_lst);
@@ -69,7 +69,7 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *lst, int fd)
 	if (!(new_lst = malloc(sizeof(t_lst_fd))))
 		return (NULL);
 	new_lst->lst_fd = fd;
-	if (!(new_lst->first_line = ft_create_lst_content("")))
+	if (!(new_lst->first_line = ft_create_lst_line("")))
 		return (NULL);
 	new_lst->next_fd = NULL;
 	if (!lst)
@@ -87,13 +87,13 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *lst, int fd)
 ** lst_line = lst_fd->first_line
 */
 
-void	ft_popout_read_elem(t_lst_content *lst_line, t_lst_fd **lst_fd)
+void	ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd)
 {
 	if (!(lst_line) || !(*lst_fd))
 		return ;
 	(*lst_fd)->first_line = lst_line->next_line;
-	free(lst_line->content);
-	lst_line->content = NULL;
+	free(lst_line->line);
+	lst_line->line = NULL;
 	free(lst_line);
 	lst_line = NULL;
 }
