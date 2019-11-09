@@ -6,12 +6,13 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 13:46:01 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:05:28 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 
 int		ft_lstclear(t_lst_fd *list)
 {
@@ -46,7 +47,7 @@ int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
 				return (0);
 		start_line = bcursor + 1;
 		(*list_tmp)->status = Full_line;
-		(*list_tmp)->next_line = ft_create_lst_content(NULL);
+		(*list_tmp)->next_line = ft_create_lst_content("");
 		(*list_tmp) = (*list_tmp)->next_line;
 		}
 		if (bcursor == len_read - 1)
@@ -72,6 +73,8 @@ t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
 		buffer[len_read] = '\0';
 		if (!(ft_alloc_content(&list_tmp, buffer, len_read)))
 			return (NULL);
+		free(buffer);
+		buffer = NULL;
 		if (len_read == 0)
 		{
 			list->status = End_file;
@@ -79,8 +82,6 @@ t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
 				return (NULL);
 			return (list);
 		}
-		free(buffer);
-		buffer = NULL;
 	}
 	return (list);
 }
@@ -114,9 +115,13 @@ int		get_next_line(int fd, char **line)
 		return (ft_lstclear(list_s));
 	list_line = list_fd->first_content;
 	if (!(list_line = ft_read_buffer(list_fd->first_content, fd))
-		|| (!(*line = ft_strjoin(*line, list_line->content))))
+		|| (!(*line = ft_strjoin(NULL, list_line->content))))
 		return (ft_lstclear(list_s));
 	result = list_line->status;
 	ft_popout_read_elem(list_line, &list_fd);
+	if (!list_fd->first_content->content)
+		ft_popout_read_elem(list_fd->first_content, &list_fd);
+	// printf(">> %p\n", list_fd->first_content->content);
+	// printf(">> %p\n", list_fd->first_content->next_line);
 	return (result);
 }

@@ -25,6 +25,9 @@ void	fonction_test_(char *argv)
 		line = NULL;
 		i++;
 	}
+	printf("gnl: %d - L. %d - %s\n",result, i, line);
+	free(line);
+	line = NULL;
 	if (get_next_line(fd, &line) == 0)
 	{
 		printf("EOF\n");
@@ -34,6 +37,8 @@ void	fonction_test_(char *argv)
 		printf("ERR\n");
 	}
 	printf("\n\n---------------------\n\n");
+	free(line);
+	line = NULL;
 }
 
 void	fonction_test_max(char *argv, int max)

@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 13:45:54 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 14:59:00 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -79,6 +79,11 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd)
 		list->next_fd = new_list;
 	return (new_list);
 }
+
+/*
+** Delete first elem
+** list_line = list_fd->first_content
+*/
 
 void	ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd)
 {
