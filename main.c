@@ -51,6 +51,8 @@ void	fonction_test_max(char *argv, int max)
 	{
 		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
 		li++;
+		free(line);
+		line = NULL;
 	}
 }
 
@@ -61,7 +63,7 @@ void 	multiple_files(int fd, char *argv, int max)
 	char *line = NULL;
 
 
-	printf(CYAN "\n ## %s ## FD: %d\n\n" RESET, argv, fd);
+	printf(CYAN "\n\n ## %s ## FD: %d\n\n" RESET, argv, fd);
 	while ((result = get_next_line(fd, &line)) && li < max)
 	{
 		if (result == -1)
@@ -127,14 +129,14 @@ int     main(int argc, char** argv)
 
 		printf(GREEN "\n>> TEST 1 - Printf the 5 first lines <<\n\n" RESET);
 
-		fonction_test_max(argv[2], 5);
+		fonction_test_max(argv[2], 70);
 		printf("\n\n---------------------\n\n");
 	}
 	if (argv[1][0] == '2')
 	{
 
 		printf(GREEN "\n>>TEST 2 - Open successively argc <<\n\n" RESET);
-		fonction_test_multiple_files(argv, argc - 2, 4);
+		fonction_test_multiple_files(argv, argc - 2, 5);
 		printf("\n\n---------------------\n\n");
 	}
 
