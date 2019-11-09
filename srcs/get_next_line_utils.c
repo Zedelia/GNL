@@ -6,14 +6,14 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:46:43 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 16:05:32 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strlen(char *str)
+int				ft_strlen(char *str)
 {
 	int i;
 
@@ -25,15 +25,15 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_join(char *s1, char *buff)
+char			*ft_join(char *s1, char *s2)
 {
 	unsigned int	i;
 	unsigned int	j;
 	char			*join;
 
-	if (s1 == NULL && buff == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
-	if (!(join = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(buff) + 1)))))
+	if (!(join = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2) + 1)))))
 		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
@@ -42,30 +42,30 @@ char	*ft_join(char *s1, char *buff)
 		i++;
 	}
 	j = 0;
-	while (buff && buff[j] != '\0' && buff[j] != '\n')
-		join[i++] = buff[j++];
+	while (s2 && s2[j] != '\0' && s2[j] != '\n')
+		join[i++] = s2[j++];
 	free(s1);
 	s1 = NULL;
 	join[i] = '\0';
 	return (join);
 }
 
-t_lst_line	*ft_create_lst_line(char *line)
+t_lst_line		*ft_create_lst_line(char *line)
 {
 	t_lst_line *new_lst;
 
 	if (!(new_lst = malloc(sizeof(t_lst_line))))
 		return (NULL);
-	new_lst->line = ft_join(NULL, line); 
+	new_lst->line = ft_join(NULL, line);
 	new_lst->status = Not_full;
 	new_lst->next_line = NULL;
 	return (new_lst);
 }
 
-t_lst_fd   *ft_create_lst_fd(t_lst_fd *lst, int fd)
+t_lst_fd		*ft_create_lst_fd(t_lst_fd *lst, int fd)
 {
-	t_lst_fd   *new_lst;
-	
+	t_lst_fd	*new_lst;
+
 	if (!(new_lst = malloc(sizeof(t_lst_fd))))
 		return (NULL);
 	new_lst->lst_fd = fd;
@@ -87,7 +87,7 @@ t_lst_fd   *ft_create_lst_fd(t_lst_fd *lst, int fd)
 ** lst_line = lst_fd->first_line
 */
 
-void	ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd)
+void			ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd)
 {
 	if (!(lst_line) || !(*lst_fd))
 		return ;

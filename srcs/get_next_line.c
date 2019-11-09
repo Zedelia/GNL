@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:59:01 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 16:08:56 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -80,9 +80,9 @@ t_lst_line		*ft_read_file(t_lst_line *lst, int fd)
 	lst_tmp = lst;
 	while (lst->status != Full_line)
 	{
-		if (!(buff = malloc(sizeof(char) * (buff_SIZE + 1))))
+		if (!(buff = malloc(sizeof(char) * (BUFF_SIZE + 1))))
 			return (NULL);
-		len_read = read(fd, buff, buff_SIZE);
+		len_read = read(fd, buff, BUFF_SIZE);
 		buff[len_read] = '\0';
 		if (!(ft_alloc_buff(&lst_tmp, buff, len_read)))
 			return (NULL);
@@ -134,7 +134,7 @@ int				get_next_line(int fd, char **line)
 	*line = NULL;
 	if (!lst_s && !(lst_s = ft_create_lst_fd(lst_s, fd)))
 		return (ERR);
-	if (fd > FD_SETSIZE || fd < 0 || buff_SIZE < 1 || read(fd, NULL, 0) < 0
+	if (fd > FD_SETSIZE || fd < 0 || BUFF_SIZE < 1 || read(fd, NULL, 0) < 0
 		|| !(lst_fd = ft_manage_fd(fd, &lst_s)))
 		return (ft_lstclear(lst_s));
 	lst_line = lst_fd->first_line;

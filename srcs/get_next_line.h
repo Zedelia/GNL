@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:48:37 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 16:08:39 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,11 +22,9 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-# ifndef buff_SIZE
-#  define buff_SIZE 1
+# ifndef BUFF_SIZE
+#  define BUFF_SIZE 64
 # endif
-
-# define buff_IS_FULL(bcursor) (bcursor == buff_SIZE - 1) ? 1 : 0
 
 typedef enum			e_result
 {
@@ -34,7 +32,6 @@ typedef enum			e_result
 	END_FILE = 0,
 	LINE_OK = 1
 }						t_result;
-
 
 typedef	enum			e_line_status
 {
@@ -44,24 +41,25 @@ typedef	enum			e_line_status
 	Line_read = 3,
 }						t_line_status;
 
-typedef struct					s_lst_fd {
-	int							lst_fd;
+typedef struct			s_lst_fd {
+	int						lst_fd;
 	struct s_lst_line		*first_line;
-	struct s_lst_fd				*next_fd;
-}								t_lst_fd;
+	struct s_lst_fd			*next_fd;
+}						t_lst_fd;
 
-typedef struct					s_lst_line {
-	char						*line;
-	t_line_status				status;
+typedef struct			s_lst_line {
+	char					*line;
+	t_line_status			status;
 	struct s_lst_line		*next_line;
-}								t_lst_line;
+}						t_lst_line;
 
-int				get_next_line(int fd, char **line);
-char			*ft_join(char *s1, char *buff);
-int				ft_strlen(char *str);
-t_lst_line		*ft_create_lst_line(char *line);
-t_lst_fd 		*ft_create_lst_fd(t_lst_fd *lst, int fd);
-void 			ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd);
-int				ft_lstclear(t_lst_fd *lst);
+int						get_next_line(int fd, char **line);
+char					*ft_join(char *s1, char *buff);
+int						ft_strlen(char *str);
+t_lst_line				*ft_create_lst_line(char *line);
+t_lst_fd				*ft_create_lst_fd(t_lst_fd *lst, int fd);
+void					ft_popout_read_elem(t_lst_line *lst_line,
+													t_lst_fd **lst_fd);
+int						ft_lstclear(t_lst_fd *lst);
 
 #endif
