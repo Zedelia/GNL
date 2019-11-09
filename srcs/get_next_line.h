@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 14:44:18 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:42:54 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,11 +22,11 @@
 # include <sys/types.h>
 # include <stdio.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 64
+# ifndef buff_SIZE
+#  define buff_SIZE 1
 # endif
 
-# define BUFFER_IS_FULL(bcursor) (bcursor == BUFFER_SIZE - 1) ? 1 : 0
+# define buff_IS_FULL(bcursor) (bcursor == buff_SIZE - 1) ? 1 : 0
 
 typedef enum			e_result
 {
@@ -41,11 +41,12 @@ typedef	enum			e_line_status
 	Not_full = 2,
 	End_file = 0,
 	Full_line = 1,
+	Line_read = 3,
 }						t_line_status;
 
 typedef struct					s_lst_fd {
-	int							list_fd;
-	struct s_lst_content		*first_content;
+	int							lst_fd;
+	struct s_lst_content		*first_line;
 	struct s_lst_fd				*next_fd;
 }								t_lst_fd;
 
@@ -56,11 +57,11 @@ typedef struct					s_lst_content {
 }								t_lst_content;
 
 int				get_next_line(int fd, char **line);
-char			*ft_strjoin(char *s1, char *buffer);
+char			*ft_strjoin(char *s1, char *buff);
 int				ft_strlen(char *str);
 t_lst_content	*ft_create_lst_content(char *content);
-t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *list, int fd);
-void ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd);
-int	ft_lstclear(t_lst_fd *list);
+t_lst_fd 		 *ft_create_lst_fd(t_lst_fd *lst, int fd);
+void ft_popout_read_elem(t_lst_content *lst_line, t_lst_fd **lst_fd);
+int	ft_lstclear(t_lst_fd *lst);
 
 #endif

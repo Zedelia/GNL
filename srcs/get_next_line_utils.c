@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 14:59:00 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:42:54 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,15 +25,15 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *buffer)
+char	*ft_strjoin(char *s1, char *buff)
 {
 	unsigned int	i;
 	unsigned int	j;
 	char			*join;
 
-	if (s1 == NULL && buffer == NULL)
+	if (s1 == NULL && buff == NULL)
 		return (NULL);
-	if (!(join = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(buffer) + 1)))))
+	if (!(join = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(buff) + 1)))))
 		return (NULL);
 	i = 0;
 	while (s1 && s1[i])
@@ -42,59 +42,58 @@ char	*ft_strjoin(char *s1, char *buffer)
 		i++;
 	}
 	j = 0;
-	while (buffer && buffer[j] != '\0' && buffer[j] != '\n')
-		join[i++] = buffer[j++];
+	while (buff && buff[j] != '\0' && buff[j] != '\n')
+		join[i++] = buff[j++];
+	free(s1);
+	s1 = NULL;
 	join[i] = '\0';
 	return (join);
 }
 
 t_lst_content	*ft_create_lst_content(char *content)
 {
-	t_lst_content *new_list;
+	t_lst_content *new_lst;
 
-	if (!(new_list = malloc(sizeof(t_lst_content))))
+	if (!(new_lst = malloc(sizeof(t_lst_content))))
 		return (NULL);
-	new_list->content = ft_strjoin(NULL, content); 
-	new_list->status = Not_full;
-	new_list->next_line = NULL;
-	return (new_list);
+	new_lst->content = ft_strjoin(NULL, content); 
+	new_lst->status = Not_full;
+	new_lst->next_line = NULL;
+	return (new_lst);
 }
 
-t_lst_fd   *ft_create_lst_fd(t_lst_fd *list, int fd)
+t_lst_fd   *ft_create_lst_fd(t_lst_fd *lst, int fd)
 {
-	t_lst_fd   *new_list;
+	t_lst_fd   *new_lst;
 	
-	if (!(new_list = malloc(sizeof(t_lst_fd))))
+	if (!(new_lst = malloc(sizeof(t_lst_fd))))
 		return (NULL);
-	new_list->list_fd = fd;
-	if (!(new_list->first_content = ft_create_lst_content("")))
+	new_lst->lst_fd = fd;
+	if (!(new_lst->first_line = ft_create_lst_content("")))
 		return (NULL);
-	new_list->next_fd = NULL;
-	if (!list)
+	new_lst->next_fd = NULL;
+	if (!lst)
 	{
-		new_list->next_fd = NULL;
-		return (list = new_list);
+		new_lst->next_fd = NULL;
+		return (lst = new_lst);
 	}
-	else if (list && fd != list->list_fd)
-		list->next_fd = new_list;
-	return (new_list);
+	else if (lst && fd != lst->lst_fd)
+		lst->next_fd = new_lst;
+	return (new_lst);
 }
 
 /*
 ** Delete first elem
-** list_line = list_fd->first_content
+** lst_line = lst_fd->first_line
 */
 
-void	ft_popout_read_elem(t_lst_content *list_line, t_lst_fd **list_fd)
+void	ft_popout_read_elem(t_lst_content *lst_line, t_lst_fd **lst_fd)
 {
-	if (!(list_line) || !(*list_fd))
+	if (!(lst_line) || !(*lst_fd))
 		return ;
-	(*list_fd)->first_content = list_line->next_line;
-	if (list_line->content)
-	{
-		free(list_line->content);
-		list_line->content = NULL;
-	}
-	free(list_line);
-	list_line = NULL;
+	(*lst_fd)->first_line = lst_line->next_line;
+	free(lst_line->content);
+	lst_line->content = NULL;
+	free(lst_line);
+	lst_line = NULL;
 }

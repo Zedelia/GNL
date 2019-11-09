@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 15:07:04 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/09 15:42:54 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -14,112 +14,111 @@
 #include "get_next_line.h"
 
 
-int		ft_lstclear(t_lst_fd *list)
+int				ft_lstclear(t_lst_fd *lst)
 {
 	t_lst_fd   *tmp;
 
-	if (!list)
+	if (!lst)
 		return (ERR) ;
-	while (list)
+	while (lst)
 	{
-		tmp = list->next_fd;
-		while (list->first_content)
-			ft_popout_read_elem(list->first_content, &list);
-		free(list);
-		list = NULL,
-		list = tmp;
+		tmp = lst->next_fd;
+		while (lst->first_line)
+			ft_popout_read_elem(lst->first_line, &lst);
+		free(lst);
+		lst = NULL,
+		lst = tmp;
 	}
 	return (ERR);
 }
 
-int		ft_alloc_content(t_lst_content **list_tmp, char *buffer, int len_read)
+int				ft_alloc_content(t_lst_content **lst_tmp, char *buff, int len_read)
 {
 	int 	bcursor;
 	int		start_line;
 
 	start_line = 0;
 	bcursor = 0;
-	while (buffer[bcursor])
+	while (buff[bcursor])
 	{
-		if (buffer[bcursor] == '\n')
+		if (buff[bcursor] == '\n')
 		{
-			if (!((*list_tmp)->content = ft_strjoin((*list_tmp)->content, &buffer[start_line])))
+			if (!((*lst_tmp)->content = ft_strjoin((*lst_tmp)->content, &buff[start_line])))
 				return (0);
 		start_line = bcursor + 1;
-		(*list_tmp)->status = Full_line;
-		(*list_tmp)->next_line = ft_create_lst_content("");
-		(*list_tmp) = (*list_tmp)->next_line;
+		(*lst_tmp)->status = Full_line;
+		(*lst_tmp)->next_line = ft_create_lst_content("");
+		(*lst_tmp) = (*lst_tmp)->next_line;
 		}
 		if (bcursor == len_read - 1)
-			(*list_tmp)->content = ft_strjoin((*list_tmp)->content, &buffer[start_line]);
+			(*lst_tmp)->content = ft_strjoin((*lst_tmp)->content, &buff[start_line]);
 		bcursor += 1;
 		}
 	return(1);
 }
 
-t_lst_content	*ft_read_buffer(t_lst_content *list, int fd)
+t_lst_content	*ft_read_buff(t_lst_content *lst, int fd)
 {
 
 	int				len_read;
-	char	*buffer;
-	t_lst_content 	*list_tmp;
+	char	*buff;
+	t_lst_content 	*lst_tmp;
 	
-	list_tmp = list;
-	while (list->status != Full_line)
+	lst_tmp = lst;
+	while (lst->status != Full_line)
 	{
-		if (!(buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		if (!(buff = malloc(sizeof(char) * (buff_SIZE + 1))))
 			return (NULL);
-		len_read = read(fd, buffer, BUFFER_SIZE);
-		buffer[len_read] = '\0';
-		if (!(ft_alloc_content(&list_tmp, buffer, len_read)))
+		len_read = read(fd, buff, buff_SIZE);
+		buff[len_read] = '\0';
+		if (!(ft_alloc_content(&lst_tmp, buff, len_read)))
 			return (NULL);
-		free(buffer);
-		buffer = NULL;
+		free(buff);
+		buff = NULL;
 		if (len_read == 0)
 		{
-			list->status = End_file;
-			if (!(list->next_line = ft_create_lst_content("")))
+			lst->status = End_file;
+			if (!(lst->next_line = ft_create_lst_content("")))
 				return (NULL);
-			return (list);
+			return (lst);
 		}
 	}
-	return (list);
+	return (lst);
 }
 
-t_lst_fd   *ft_manage_fd(int fd, t_lst_fd **list)
+t_lst_fd   		*ft_manage_fd(int fd, t_lst_fd **lst)
 {
-	t_lst_fd   *list_tmp;
+	t_lst_fd   *lst_tmp;
 
-	list_tmp = *list;
-	while (list_tmp->next_fd && list_tmp->list_fd != fd)
-		list_tmp = list_tmp->next_fd;
-	if (fd == list_tmp->list_fd)
-		return (list_tmp);
-	else if (fd != list_tmp->list_fd)
-		list_tmp->next_fd = ft_create_lst_fd(list_tmp, fd);
-	return (list_tmp->next_fd);
+	lst_tmp = *lst;
+	while (lst_tmp->next_fd && lst_tmp->lst_fd != fd)
+		lst_tmp = lst_tmp->next_fd;
+	if (fd == lst_tmp->lst_fd)
+		return (lst_tmp);
+	else if (fd != lst_tmp->lst_fd)
+		lst_tmp->next_fd = ft_create_lst_fd(lst_tmp, fd);
+	return (lst_tmp->next_fd);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
-	static t_lst_fd		*list_s;
-	t_lst_fd   			*list_fd;
-	t_lst_content   	*list_line;
+	static t_lst_fd		*lst_s;
+	t_lst_fd   			*lst_fd;
+	t_lst_content   	*lst_line;
 	int					result;
 
 	*line = NULL;
-	if (!list_s && !(list_s = ft_create_lst_fd(list_s, fd)))
+	if (!lst_s && !(lst_s = ft_create_lst_fd(lst_s, fd)))
 		return (ERR);
-	if (fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0 
-		|| !(list_fd = ft_manage_fd(fd, &list_s)))
-		return (ft_lstclear(list_s));
-	list_line = list_fd->first_content;
-	if (!(list_line = ft_read_buffer(list_fd->first_content, fd))
-		|| (!(*line = ft_strjoin(NULL, list_line->content))))
-		return (ft_lstclear(list_s));
-	result = list_line->status;
-	ft_popout_read_elem(list_line, &list_fd);
-	if (!list_fd->first_content->content)
-		ft_popout_read_elem(list_fd->first_content, &list_fd);
+	if (fd > FD_SETSIZE || fd < 0 || buff_SIZE < 1 || read(fd, NULL, 0) < 0 
+		|| !(lst_fd = ft_manage_fd(fd, &lst_s)))
+		return (ft_lstclear(lst_s));
+	lst_line = lst_fd->first_line;
+	if (!(lst_line = ft_read_buff(lst_fd->first_line, fd))
+		|| (!(*line = ft_strjoin(NULL, lst_line->content))))
+		return (ft_lstclear(lst_s));
+	result = lst_line->status;
+	ft_popout_read_elem(lst_fd->first_line, &lst_fd);
+
 	return (result);
 }
