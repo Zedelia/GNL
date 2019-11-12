@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 17:25:21 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/12 16:26:38 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,7 +30,6 @@ int				ft_lstclear(t_lst_fd *lst)
 		while (lst->first_line)
 			ft_popout_read_elem(lst->first_line, &lst);
 		free(lst);
-		lst = NULL;
 		lst = tmp;
 	}
 	return (ERR);
@@ -113,9 +112,7 @@ t_lst_fd		*ft_manage_fd(int fd, t_lst_fd **lst)
 		lst_tmp = lst_tmp->next_fd;
 	if (fd == lst_tmp->lst_fd)
 		return (lst_tmp);
-	else if (fd != lst_tmp->lst_fd)
-		lst_tmp->next_fd = ft_create_lst_fd(lst_tmp, fd);
-	return (lst_tmp->next_fd);
+	return (ft_create_lst_fd(lst_tmp, fd));
 }
 
 /*
@@ -139,11 +136,14 @@ int				get_next_line(int fd, char **line)
 		return (ERR);
 	if (!(lst_fd = ft_manage_fd(fd, &lst_s)))
 		return (ft_lstclear(lst_s));
-	lst_line = lst_fd->first_line;
+	if (!(lst_line = lst_fd->first_line))
+		return (0);
 	if (!(lst_line = ft_read_file(lst_fd->first_line, fd))
 		|| (!(*line = ft_join(NULL, lst_line->line))))
 		return (ft_lstclear(lst_s));
 	result = lst_line->status;
+	if (lst_fd->first_line->status == End_file)
+		ft_popout_read_elem(lst_fd->first_line, &lst_fd);
 	ft_popout_read_elem(lst_fd->first_line, &lst_fd);
 	return (result);
 }

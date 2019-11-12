@@ -21,6 +21,22 @@ void	fonction_test_(char *argv)
 	int result = 1;
 	fd = open(argv, O_RDONLY);
 
+	printf("fd: %d\n", fd);
+	while ((result = get_next_line(fd, &line)) == 1)
+	{
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
+		free(line);
+		line = NULL;
+		li++;
+	}
+	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
+	free(line);
+	line = NULL;
+	if (result == -1)
+	{
+		printf(RED "ERR\n" RESET);
+	}
+		printf("fd: %d\n", fd);
 	while ((result = get_next_line(fd, &line)) == 1)
 	{
 		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
@@ -36,8 +52,6 @@ void	fonction_test_(char *argv)
 		printf(RED "ERR\n" RESET);
 	}
 	printf("\n\n---------------------\n\n");
-	free(line);
-	line = NULL;
 }
 
 void	fonction_test_max(char *argv, int max)

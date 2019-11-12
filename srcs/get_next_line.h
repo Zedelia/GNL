@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/29 09:46:01 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/09 17:25:23 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/12 14:32:31 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,7 +23,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 64
 # endif
 
 typedef enum			e_result
@@ -45,6 +45,7 @@ typedef struct			s_lst_fd {
 	int						lst_fd;
 	struct s_lst_line		*first_line;
 	struct s_lst_fd			*next_fd;
+
 }						t_lst_fd;
 
 typedef struct			s_lst_line {
