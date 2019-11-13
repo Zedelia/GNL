@@ -51,6 +51,23 @@ void	fonction_test_(char *argv)
 	{
 		printf(RED "ERR\n" RESET);
 	}
+	close(fd);
+	fd = open(argv, O_RDONLY);
+	printf("\nfd: %d\n", fd);
+	while ((result = get_next_line(fd, &line)) == 1)
+	{
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
+		free(line);
+		line = NULL;
+		li++;
+	}
+	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
+	free(line);
+	line = NULL;
+	if (result == -1)
+	{
+		printf(RED "ERR\n" RESET);
+	}
 	printf("\n\n---------------------\n\n");
 }
 
@@ -148,7 +165,7 @@ int     main(int argc, char** argv)
 	{
 
 		printf(GREEN "\n>>TEST 2 - Open successively argc <<\n\n" RESET);
-		fonction_test_multiple_files(argv, argc - 2, 5);
+		fonction_test_multiple_files(argv, argc - 2, 12);
 	}
 	if (argv[1][0] == '3')
 	{

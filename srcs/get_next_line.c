@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 10:30:39 by melodiebos   #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 16:26:38 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 11:50:22 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,7 +28,7 @@ int				ft_lstclear(t_lst_fd *lst)
 	{
 		tmp = lst->next_fd;
 		while (lst->first_line)
-			ft_popout_read_elem(lst->first_line, &lst);
+			ft_popout_read_elem(lst->first_line, &lst, &lst);
 		free(lst);
 		lst = tmp;
 	}
@@ -90,8 +90,7 @@ t_lst_line		*ft_read_file(t_lst_line *lst, int fd)
 		if (len_read == 0)
 		{
 			lst->status = End_file;
-			if (!(lst->next_line = ft_create_lst_line("")))
-				return (NULL);
+			lst->next_line = NULL;
 			return (lst);
 		}
 	}
@@ -128,22 +127,15 @@ int				get_next_line(int fd, char **line)
 	t_lst_line			*lst_line;
 	int					result;
 
-	if (!line || fd > FD_SETSIZE || fd < 0 || BUFFER_SIZE < 1
-		|| read(fd, NULL, 0) < 0)
-		return (ERR);
-	*line = NULL;
-	if (!lst_s && !(lst_s = ft_create_lst_fd(lst_s, fd)))
+	if (!line || fd < 0 || BUFFER_SIZE < 1 || read(fd, NULL, 0) < 0
+		|| (!lst_s && !(lst_s = ft_create_lst_fd(lst_s, fd))))
 		return (ERR);
 	if (!(lst_fd = ft_manage_fd(fd, &lst_s)))
 		return (ft_lstclear(lst_s));
-	if (!(lst_line = lst_fd->first_line))
-		return (0);
 	if (!(lst_line = ft_read_file(lst_fd->first_line, fd))
 		|| (!(*line = ft_join(NULL, lst_line->line))))
 		return (ft_lstclear(lst_s));
 	result = lst_line->status;
-	if (lst_fd->first_line->status == End_file)
-		ft_popout_read_elem(lst_fd->first_line, &lst_fd);
-	ft_popout_read_elem(lst_fd->first_line, &lst_fd);
+	ft_popout_read_elem(lst_fd->first_line, &lst_fd, &lst_s);
 	return (result);
 }

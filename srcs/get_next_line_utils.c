@@ -6,7 +6,7 @@
 /*   By: mbos <mbos@student.le-101.fr>              +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/11/06 17:47:15 by mbos         #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 14:31:32 by mbos        ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 11:50:45 by mbos        ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,7 +18,7 @@ int				ft_strlen(char *str)
 	int i;
 
 	i = 0;
-	if (str == NULL)
+	if (!str)
 		return (i);
 	while (str[i] && str[i] != '\n')
 		i++;
@@ -84,13 +84,30 @@ t_lst_fd		*ft_create_lst_fd(t_lst_fd *lst, int fd)
 ** lst_line = lst_fd->first_line
 */
 
-void			ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd)
+void			ft_popout_read_elem(t_lst_line *lst_line, t_lst_fd **lst_fd, t_lst_fd **lst_s)
 {
-	if (!(lst_line) || !(*lst_fd))
-		return ;
+	t_lst_fd 	*tmp;
+
 	(*lst_fd)->first_line = lst_line->next_line;
 	free(lst_line->line);
 	lst_line->line = NULL;
 	free(lst_line);
 	lst_line = NULL;
+	if (!(*lst_fd)->first_line && (*lst_s) == (*lst_fd))
+	{
+		tmp = (*lst_s)->next_fd;
+		if ((*lst_s) == (*lst_fd))
+		{
+			free((*lst_s));
+			(*lst_s) = tmp;
+			(*lst_fd) = NULL;
+			return ;
+		}
+		while (tmp != (*lst_fd) && tmp->next_fd != (*lst_fd))
+			tmp = tmp->next_fd;
+		tmp->next_fd = (*lst_fd)->next_fd;
+		free((*lst_fd));
+		(*lst_fd) = NULL;
+	}
 }
+
