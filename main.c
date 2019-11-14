@@ -13,62 +13,41 @@
 #define CYAN    "\x1b[36m"
 #define RESET   "\x1b[0m"
 
+void test(int fd)
+{
+	int result;
+	char *line;
+	int li = 0;
+
+	while ((result = get_next_line(fd, &line)) == 1)
+	{
+		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s]\n",result, li, line);
+		free(line);
+		line = NULL;
+		li++;
+	}
+	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s]\n",result, li, line);
+	free(line);
+	line = NULL;
+	if (result == -1)
+	{
+		printf(RED "ERR\n" RESET);
+	}
+}
+
 void	fonction_test_(char *argv)
 {
-	int li = 1;
-	char *line;
 	int fd;
-	int result = 1;
 	fd = open(argv, O_RDONLY);
 
-	printf("fd: %d\n", fd);
-	while ((result = get_next_line(fd, &line)) == 1)
-	{
-		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
-		free(line);
-		line = NULL;
-		li++;
-	}
-	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
-	free(line);
-	line = NULL;
-	if (result == -1)
-	{
-		printf(RED "ERR\n" RESET);
-	}
-		printf("fd: %d\n", fd);
-	while ((result = get_next_line(fd, &line)) == 1)
-	{
-		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
-		free(line);
-		line = NULL;
-		li++;
-	}
-	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
-	free(line);
-	line = NULL;
-	if (result == -1)
-	{
-		printf(RED "ERR\n" RESET);
-	}
+	printf(GREEN "PREMIER APPEL || fd: %d\n" RESET, fd);
+	test(fd);
+	printf(GREEN "\nAPPEL apres fin de fichier || fd: %d\n" RESET, fd);
+	test(fd);
 	close(fd);
 	fd = open(argv, O_RDONLY);
-	printf("\nfd: %d\n", fd);
-	while ((result = get_next_line(fd, &line)) == 1)
-	{
-		printf(YELLOW "[Return %d]" RESET " - " CYAN "L. %d: " RESET  "%s\n",result, li, line);
-		free(line);
-		line = NULL;
-		li++;
-	}
-	printf(MAGENTA "[Return %d]" RESET " - " CYAN "L. %d: "  RESET "%s\n",result, li, line);
-	free(line);
-	line = NULL;
-	if (result == -1)
-	{
-		printf(RED "ERR\n" RESET);
-	}
-	printf("\n\n---------------------\n\n");
+	printf(GREEN "\nSECOND APPEL apres close et open|| fd: %d\n" RESET, fd);
+	test(fd);
 }
 
 void	fonction_test_max(char *argv, int max)
@@ -90,7 +69,7 @@ void	fonction_test_max(char *argv, int max)
 void 	multiple_files(int fd, char *argv, int max)
 {
 	int li = 1;
-	int result = 0;
+	int result = 1;
 	char *line = NULL;
 
 
@@ -107,8 +86,8 @@ void 	multiple_files(int fd, char *argv, int max)
 		line = NULL;
 		li++;
 	}
-	result == 1 ? printf(YELLOW "[Return %d]" RESET, result) : printf(MAGENTA "[Return %d]" RESET, result);
-	printf(" - " CYAN "L. %d: " RESET  "%s\n", li, line);
+	result == 1 ? printf(YELLOW "[Return %d]" RESET, result) : printf(MAGENTA "[Return %d] -" CYAN " L. %d: " RESET  "%s\n",result, li, line);
+	// printf(" - " CYAN "L. %d: " RESET  "%s\n", li, line);
 	free(line);
 	line = NULL;
 }
